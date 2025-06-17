@@ -1,0 +1,66 @@
+{
+  "appBarTitle": "Demo Form",
+  
+  "doYouSmokeQuestion": "Czy Palisz papierosy?",
+  "yes": "Tak",
+  "no": "Nie",
+  
+  "cigarettesPerDay": "Liczba papierosów dziennie:",
+  "numberOfItems": "Liczba: {count}",
+  "@numberOfItems": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  
+  "yearsSmokingQuestion": "Od ilu lat palisz:",
+  "healthIssuesQuestion": "Czy masz problemy zdrowotne związane z paleniem?",
+  "wantToQuitQuestion": "Czy chcesz rzucić palenie?",
+  "quitDatePlanned": "Planowana data rzucenia palenia:",
+  "selectDate": "Wybierz datę",
+  
+  "awarenessOfEffects": "Świadomość negatywnych skutków palenia:",
+  "iAmAware": "Jestem świadomy/a",
+  "iAmNotAware": "Nie jestem świadomy/a",
+  
+  "smokingEffects": "Skutki palenia papierosów:",
+  
+  "effectLungCancer": "Zwiększone ryzyko raka płuc, gardła i jamy ustnej",
+  "effectCardiovascular": "Choroby układu krążenia i zawały serca",
+  "effectCOPD": "Przewlekła obturacyjna choroba płuc (POChP)",
+  "effectPhysicalCondition": "Pogorszenie kondycji i wydolności fizycznej",
+  "effectSkinAging": "Przedwczesne starzenie się skóry",
+  "effectFertility": "Obniżona płodność i problemy z potencją",
+  
+  "whyNotQuitSmoking": "Dlaczego nie chcesz rzucić palenia?",
+  "commentsAboutSmokers": "Uwagi na temat ludzi palących papierosy:",
+  
+  "explainWhyNotQuitDespiteIssues": "Wyjaśnij dlaczego nie chcesz rzucić palenia pomimo problemów zdrowotnych...",
+  "explainWhySmokeDespiteAwareness": "Wyjaśnij dlaczego nadal palisz pomimo świadomości szkodliwości...",
+  "enterYourComments": "Wpisz tutaj swoje uwagi...",
+  
+  "submit": "Wyślij",
+  "formSubmitted": "Formularz został wysłany!",
+  "thankYouForFillingForm": "Dziękujemy za wypełnienie ankiety.",
+  "fillAgain": "Wypełnij ponownie",
+  
+  "errorLoading": "Błąd ładowania: {message}",
+  "@errorLoading": {
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  
+  "errorSubmitting": "Błąd wysyłania: {message}",
+  "@errorSubmitting": {
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "appBarTitle": "Demo Form",
+  
+  "doYouSmokeQuestion": "Do you smoke cigarettes?",
+  "yes": "Yes",
+  "no": "No",
+  
+  "cigarettesPerDay": "Number of cigarettes per day:",
+  "numberOfItems": "Number: {count}",
+  "@numberOfItems": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  
+  "yearsSmokingQuestion": "How many years have you been smoking:",
+  "healthIssuesQuestion": "Do you have health issues related to smoking?",
+  "wantToQuitQuestion": "Do you want to quit smoking?",
+  "quitDatePlanned": "Planned date to quit smoking:",
+  "selectDate": "Select date",
+  
+  "awarenessOfEffects": "Awareness of negative effects of smoking:",
+  "iAmAware": "I am aware",
+  "iAmNotAware": "I am not aware",
+  
+  "smokingEffects": "Effects of smoking cigarettes:",
+  
+  "effectLungCancer": "Increased risk of lung, throat and oral cancer",
+  "effectCardiovascular": "Cardiovascular diseases and heart attacks",
+  "effectCOPD": "Chronic Obstructive Pulmonary Disease (COPD)",
+  "effectPhysicalCondition": "Deterioration of physical condition and endurance",
+  "effectSkinAging": "Premature skin aging",
+  "effectFertility": "Reduced fertility and potency problems",
+  
+  "whyNotQuitSmoking": "Why don't you want to quit smoking?",
+  "commentsAboutSmokers": "Comments about people who smoke cigarettes:",
+  
+  "explainWhyNotQuitDespiteIssues": "Explain why you don't want to quit smoking despite health issues...",
+  "explainWhySmokeDespiteAwareness": "Explain why you continue to smoke despite awareness of harmful effects...",
+  "enterYourComments": "Enter your comments here...",
+  
+  "submit": "Submit",
+  "formSubmitted": "Form has been submitted!",
+  "thankYouForFillingForm": "Thank you for filling out the survey.",
+  "fillAgain": "Fill again",
+  
+  "errorLoading": "Loading error: {message}",
+  "@errorLoading": {
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  
+  "errorSubmitting": "Submission error: {message}",
+  "@errorSubmitting": {
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  }
+}

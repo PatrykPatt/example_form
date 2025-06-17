@@ -1,17 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'smoke_cubit.dart';
 import 'widgets/form_widgets.dart';
 
-class SmokePage extends StatelessWidget {
+class SmokePage extends StatefulWidget {
   const SmokePage({super.key});
 
   @override
+  State<SmokePage> createState() => _SmokePageState();
+}
+
+class _SmokePageState extends State<SmokePage> {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    context.read<SmokeCubit>().loadSmokingEffects(AppLocalizations.of(context));
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Demo Form', style: TextStyle(color: Colors.black)),
+        title: Text(l10n.appBarTitle, style: const TextStyle(color: Colors.black)),
         backgroundColor: Colors.grey,
       ),
       body: BlocConsumer<SmokeCubit, SmokeState>(
@@ -35,6 +49,7 @@ class SmokePage extends StatelessWidget {
   }
 
   Widget _buildForm(BuildContext context, SmokeState state) {
+    final l10n = AppLocalizations.of(context);
     final bottomPadding = MediaQuery.of(context).viewPadding.bottom;
     
     return SafeArea(
@@ -43,10 +58,10 @@ class SmokePage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Center(
+            Center(
               child: Text(
-                'Czy Palisz papierosy?',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                l10n.doYouSmokeQuestion,
+                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -57,13 +72,13 @@ class SmokePage extends StatelessWidget {
               children: [
                 FloatingActionButton.extended(
                   onPressed: () => context.read<SmokeCubit>().setSmoker(true),
-                  label: const Text('Tak'),
+                  label: Text(l10n.yes),
                   backgroundColor: state.isSmoker == true ? Colors.green.shade800 : Colors.green,
                 ),
                 const SizedBox(width: 30),
                 FloatingActionButton.extended(
                   onPressed: () => context.read<SmokeCubit>().setSmoker(false),
-                  label: const Text('Nie'),
+                  label: Text(l10n.no),
                   backgroundColor: state.isSmoker == false ? Colors.red.shade800 : Colors.red,
                 ),
               ],
@@ -80,10 +95,10 @@ class SmokePage extends StatelessWidget {
               
               Text(
                 state.isSmoker == true && state.hasHealthIssues == true ? 
-                  'Dlaczego nie chcesz rzucić palenia?' : 
+                  l10n.whyNotQuitSmoking : 
                   state.isSmoker == true ? 
-                    'Dlaczego nie chcesz rzucić palenia?' : 
-                    'Uwagi na temat ludzi palących papierosy:',
+                    l10n.whyNotQuitSmoking : 
+                    l10n.commentsAboutSmokers,
                 style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
@@ -91,7 +106,7 @@ class SmokePage extends StatelessWidget {
                 maxLines: 4,
                 decoration: InputDecoration(
                   border: const OutlineInputBorder(),
-                  hintText: state.commentsHintText,
+                  hintText: state.getCommentsHintText(l10n),
                 ),
                 onChanged: (value) => context.read<SmokeCubit>().setComments(value),
                 controller: TextEditingController(text: state.comments)..selection = 
@@ -108,14 +123,14 @@ class SmokePage extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                     textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
-                  onPressed: state.isLoading ? null : () => context.read<SmokeCubit>().submitForm(),
+                  onPressed: state.isLoading ? null : () => context.read<SmokeCubit>().submitForm(l10n),
                   child: state.isLoading 
                     ? const SizedBox(
                         width: 20,
                         height: 20,
                         child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
                       )
-                    : const Text('Wyślij'),
+                    : Text(l10n.submit),
                 ),
               ),
             ],
@@ -126,6 +141,8 @@ class SmokePage extends StatelessWidget {
   }
   
   Widget _buildSmokerSection(BuildContext context, SmokeState state) {
+    final l10n = AppLocalizations.of(context);
+    
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -133,9 +150,9 @@ class SmokePage extends StatelessWidget {
         const Divider(),
         const SizedBox(height: 20),
         
-        const Text(
-          'Liczba papierosów dziennie:',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        Text(
+          l10n.cigarettesPerDay,
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 10),
         FormWidgets.buildSlider(
@@ -143,13 +160,14 @@ class SmokePage extends StatelessWidget {
           min: 0.0,
           max: 60.0,
           onChanged: (value) => context.read<SmokeCubit>().setCigarettesPerDay(value.round()),
+          l10n: l10n,
         ),
         
         const SizedBox(height: 30),
         
-        const Text(
-          'Od ilu lat palisz:',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        Text(
+          l10n.yearsSmokingQuestion,
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 10),
         FormWidgets.buildSlider(
@@ -157,64 +175,69 @@ class SmokePage extends StatelessWidget {
           min: 0.0,
           max: 60.0,
           onChanged: (value) => context.read<SmokeCubit>().setYearsSmoked(value.round()),
+          l10n: l10n,
         ),
         
         const SizedBox(height: 30),
         
-        const Text(
-          'Czy masz problemy zdrowotne związane z paleniem?',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        Text(
+          l10n.healthIssuesQuestion,
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 10),
         FormWidgets.buildBooleanRadioGroup(
           value: state.hasHealthIssues,
           onChanged: (value) => context.read<SmokeCubit>().setHasHealthIssues(value!),
+          l10n: l10n,
         ),
         
         if (state.hasHealthIssues == true) ...[
           const SizedBox(height: 30),
-          const Text(
-            'Czy chcesz rzucić palenie?',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          Text(
+            l10n.wantToQuitQuestion,
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
           FormWidgets.buildBooleanRadioGroup(
             value: state.wantsToQuit,
             onChanged: (value) => context.read<SmokeCubit>().setWantsToQuit(value!),
+            l10n: l10n,
           ),
           
           if (state.wantsToQuit == true) ...[
             const SizedBox(height: 30),
-            const Text(
-              'Planowana data rzucenia palenia:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            Text(
+              l10n.quitDatePlanned,
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
             FormWidgets.buildDatePicker(
               context: context,
               selectedDate: state.quitDate,
               onDateSelected: (date) => context.read<SmokeCubit>().setQuitDate(date),
+              l10n: l10n,
             ),
           ],
         ],
         
         if (state.hasHealthIssues == false) ...[
           const SizedBox(height: 30),
-          const Text(
-            'Świadomość negatywnych skutków palenia:',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          Text(
+            l10n.awarenessOfEffects,
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
           FormWidgets.buildAwarenessRadioGroup(
             value: state.awarenessOfEffects,
             onChanged: (value) => context.read<SmokeCubit>().setAwarenessOfEffects(value!),
+            l10n: l10n,
           ),
           
           if (state.awarenessOfEffects == false) ...[
             const SizedBox(height: 20),
-            const Text(
-              'Skutki palenia papierosów:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            Text(
+              l10n.smokingEffects,
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
             FormWidgets.buildSmokingEffectsList(state.smokingEffects, state.error),
@@ -225,6 +248,8 @@ class SmokePage extends StatelessWidget {
   }
   
   Widget _buildNonSmokerSection(BuildContext context, SmokeState state) {
+    final l10n = AppLocalizations.of(context);
+    
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -232,21 +257,22 @@ class SmokePage extends StatelessWidget {
         const Divider(),
         const SizedBox(height: 20),
         
-        const Text(
-          'Świadomość negatywnych skutków palenia:',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        Text(
+          l10n.awarenessOfEffects,
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 10),
         FormWidgets.buildAwarenessRadioGroup(
           value: state.awarenessOfEffects,
           onChanged: (value) => context.read<SmokeCubit>().setAwarenessOfEffects(value!),
+          l10n: l10n,
         ),
         
         if (state.awarenessOfEffects == false) ...[
           const SizedBox(height: 20),
-          const Text(
-            'Skutki palenia papierosów:',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          Text(
+            l10n.smokingEffects,
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
           FormWidgets.buildSmokingEffectsList(state.smokingEffects, state.error),
@@ -256,21 +282,23 @@ class SmokePage extends StatelessWidget {
   }
   
   Widget _buildFormSubmitted(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Icon(Icons.check_circle_outline, size: 100, color: Colors.green),
           const SizedBox(height: 20),
-          const Text(
-            'Formularz został wysłany!',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          Text(
+            l10n.formSubmitted,
+            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 10),
-          const Text(
-            'Dziękujemy za wypełnienie ankiety.',
-            style: TextStyle(fontSize: 18),
+          Text(
+            l10n.thankYouForFillingForm,
+            style: const TextStyle(fontSize: 18),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 40),
@@ -278,8 +306,8 @@ class SmokePage extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
             ),
-            onPressed: () => context.read<SmokeCubit>().resetForm(),
-            child: const Text('Wypełnij ponownie'),
+            onPressed: () => context.read<SmokeCubit>().resetForm(l10n),
+            child: Text(l10n.fillAgain),
           ),
         ],
       ),

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SmokeData {
   final bool? isSmoker;
@@ -22,23 +23,23 @@ class SmokeData {
   });
 }
 
-class SmokeRepository {  
+class SmokeRepository {
   Future<bool> submitFormData(SmokeData data) async {
     await Future.delayed(const Duration(seconds: 1));
     
     return true;
   }
   
-  Future<List<String>> getSmokingEffects() async {
+  Future<List<String>> getSmokingEffects(AppLocalizations l10n) async {
     await Future.delayed(const Duration(milliseconds: 300));
     
-    return const [
-      'Zwiększone ryzyko raka płuc, gardła i jamy ustnej',
-      'Choroby układu krążenia i zawały serca',
-      'Przewlekła obturacyjna choroba płuc (POChP)',
-      'Pogorszenie kondycji i wydolności fizycznej',
-      'Przedwczesne starzenie się skóry',
-      'Obniżona płodność i problemy z potencją',
+    return [
+      l10n.effectLungCancer,
+      l10n.effectCardiovascular,
+      l10n.effectCOPD,
+      l10n.effectPhysicalCondition,
+      l10n.effectSkinAging,
+      l10n.effectFertility,
     ];
   }
 }

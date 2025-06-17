@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FormWidgets {
   static Widget buildSlider({
@@ -7,6 +8,7 @@ class FormWidgets {
     required double min,
     required double max,
     required Function(double) onChanged,
+    required AppLocalizations l10n,
   }) {
     return Column(
       children: [
@@ -19,7 +21,7 @@ class FormWidgets {
           onChanged: onChanged,
         ),
         Text(
-          'Liczba: ${value.round()}',
+          l10n.numberOfItems(value.round()),
           textAlign: TextAlign.center,
           style: const TextStyle(fontSize: 16),
         ),
@@ -30,12 +32,13 @@ class FormWidgets {
   static Widget buildBooleanRadioGroup({
     required bool? value,
     required Function(bool?) onChanged,
+    required AppLocalizations l10n,
   }) {
     return Row(
       children: [
         Expanded(
           child: RadioListTile<bool>(
-            title: const Text('Tak'),
+            title: Text(l10n.yes),
             value: true,
             groupValue: value,
             onChanged: onChanged,
@@ -43,7 +46,7 @@ class FormWidgets {
         ),
         Expanded(
           child: RadioListTile<bool>(
-            title: const Text('Nie'),
+            title: Text(l10n.no),
             value: false,
             groupValue: value,
             onChanged: onChanged,
@@ -56,12 +59,13 @@ class FormWidgets {
   static Widget buildAwarenessRadioGroup({
     required bool? value,
     required Function(bool?) onChanged,
+    required AppLocalizations l10n,
   }) {
     return Row(
       children: [
         Expanded(
           child: RadioListTile<bool>(
-            title: const Text('Jestem świadomy/a'),
+            title: Text(l10n.iAmAware),
             value: true,
             groupValue: value,
             onChanged: onChanged,
@@ -69,7 +73,7 @@ class FormWidgets {
         ),
         Expanded(
           child: RadioListTile<bool>(
-            title: const Text('Nie jestem świadomy/a'),
+            title: Text(l10n.iAmNotAware),
             value: false,
             groupValue: value,
             onChanged: onChanged,
@@ -103,6 +107,7 @@ class FormWidgets {
     required BuildContext context,
     required DateTime? selectedDate,
     required Function(DateTime) onDateSelected,
+    required AppLocalizations l10n,
   }) {
     final dateFormat = DateFormat('dd.MM.yyyy');
     final now = DateTime.now();
@@ -131,7 +136,7 @@ class FormWidgets {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              selectedDate == null ? 'Wybierz datę' : dateFormat.format(selectedDate),
+              selectedDate == null ? l10n.selectDate : dateFormat.format(selectedDate),
               style: const TextStyle(fontSize: 16),
             ),
             const Icon(Icons.calendar_today),

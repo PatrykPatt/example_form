@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'repository/smoke_repository.dart';
 
 class SmokeState extends Equatable {
@@ -91,15 +92,15 @@ class SmokeState extends Equatable {
     return isSmoker == false && awarenessOfEffects == true;
   }
 
-  String get commentsHintText {
+  String getCommentsHintText(AppLocalizations l10n) {
     if (isSmoker == true) {
       if (hasHealthIssues == true) {
-        return 'Wyjaśnij dlaczego nie chcesz rzucić palenia pomimo problemów zdrowotnych...';
+        return l10n.explainWhyNotQuitDespiteIssues;
       } else {
-        return 'Wyjaśnij dlaczego nadal palisz pomimo świadomości szkodliwości...';
+        return l10n.explainWhySmokeDespiteAwareness;
       }
     }
-    return 'Wpisz tutaj swoje uwagi...';
+    return l10n.enterYourComments;
   }
   
   @override
@@ -113,17 +114,15 @@ class SmokeState extends Equatable {
 class SmokeCubit extends Cubit<SmokeState> {
   final SmokeRepository _repository;
 
-  SmokeCubit(this._repository) : super(const SmokeState()) {
-    _loadSmokingEffects();
-  }
+  SmokeCubit(this._repository) : super(const SmokeState());
 
-  Future<void> _loadSmokingEffects() async {
+  Future<void> loadSmokingEffects(AppLocalizations l10n) async {
     try {
       emit(state.copyWith(isLoading: true));
-      final effects = await _repository.getSmokingEffects();
+      final effects = await _repository.getSmokingEffects(l10n);
       emit(state.copyWith(smokingEffects: effects, isLoading: false));
     } catch (e) {
-      emit(state.copyWith(error: 'Błąd ładowania: ${e.toString()}', isLoading: false));
+      emit(state.copyWith(error: l10n.errorLoading(e.toString()), isLoading: false));
     }
   }
 
@@ -136,7 +135,7 @@ class SmokeCubit extends Cubit<SmokeState> {
   void setAwarenessOfEffects(bool value) => emit(state.copyWith(awarenessOfEffects: value));
   void setComments(String value) => emit(state.copyWith(comments: value));
   
-  Future<void> submitForm() async {
+  Future<void> submitForm(AppLocalizations l10n) async {
     if (!state.isFormComplete) return;
     
     try {
@@ -156,12 +155,12 @@ class SmokeCubit extends Cubit<SmokeState> {
       await _repository.submitFormData(data);
       emit(state.copyWith(formSubmitted: true, isLoading: false));
     } catch (e) {
-      emit(state.copyWith(error: 'Błąd wysyłania: ${e.toString()}', isLoading: false));
+      emit(state.copyWith(error: l10n.errorSubmitting(e.toString()), isLoading: false));
     }
   }
   
-  void resetForm() {
+  void resetForm(AppLocalizations l10n) {
     emit(const SmokeState());
-    _loadSmokingEffects();
+    loadSmokingEffects(l10n);
   }
 }
